@@ -9,7 +9,7 @@
    <div class="bg_container position_relative">
 
     <?php include 'header.php';
-    $shop_name = "spadone";
+    $shop_name = "psyo";
     function getRandomNumber($min, $max) {
          return rand($min, $max);
     }
@@ -102,43 +102,101 @@
 
 <?php include 'cache/scrape.php' ?>
 <section class="pl_4 pb_4 pt_12 pr_4 mt_12 position_relative">
-        <div class="container">
-            <div class="text_xlarge align_center mb_2 weight_semibold">Explore Products</div>
-            <div class="align_center mb_8 color_neutral">Check out the variety of products that we provide.</div>
-            <div class="grid_container" data-aos="fade-up" id="products">
-                <?php if (!empty($products)) : ?>
-                    <?php foreach ($products as $id => $product) : ?>
-                        <?php 
-                        if (isset($product['minPriceDetails']['amount']) && $product['minPriceDetails']['amount'] > 0 && isset($product['product'])) : 
-                            $price = $product['minPriceDetails']['amount'];
-                            $price_parts = explode('.', $price);
-                            if (strpos($price, '.') === false) {
-                                $price .= '.00';
-                            } elseif (count($price_parts) == 2 && strlen($price_parts[1]) == 1) {
-                                $price .= '0';  // Ensure two decimal places
-                            }
-                        ?>
-                            <div id="<?php echo htmlspecialchars($product['id']); ?>" data-product-id="<?php echo htmlspecialchars($product['id']); ?>" class="active_items p_4 radius_medium product bg_secondary mb_4 flex_rows_4">
-                                <div class="">
-                                    <div class="product_image" data-src="https://imagedelivery.net/<?= htmlspecialchars($product['product']['thumbnailCfImageId']); ?>/productCard"></div>
-                                </div>
-                                <div class="product_info">
-                                    <div class="product_title weight_semibold vmiddle theme_text_gradient"><?= htmlspecialchars($product['product']['title']); ?></div>
-                                    <div class="pt_2 pb_2 text_small mb_8 none" data-height="40px"><?= htmlspecialchars($product['product']['shortDescription'] ?? ''); ?></div>
-                                    <div class="mb_8"><?= htmlspecialchars($product['minPriceDetails']['currency']); ?> <?= htmlspecialchars($price); ?></div>
-                                    <button data-width="100%" data-sellpass-product-path="<?= htmlspecialchars($product['path']); ?>" data-sellpass-domain="<?php echo htmlspecialchars($shop_name); ?>.sellpass.io" href="#" class="ml_auto mr_auto radius_medium weight_semibold mt_4 block pl_4 pr_4 pb_3 pt_3 align_center button_solid">
-                                        Purchase
-                                    </button>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <p>No products found.</p>
-                <?php endif; ?>
-            </div>
-        </div>
-    </section>
+  <div class="container">
+  
+     <div class="text_xlarge align_center mb_2 weight_semibold">Explore Products</div>
+     <div class="align_center mb_8 color_neutral">Check out the variety of products that we provide.</div>
+    
+     
+    <div class="search_form ml_auto mr_auto align_center  mb_8   flex_persistent" data-width="100%">
+	  
+	 <div class=" bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
+	  
+	
+	  <input type="text" id="product" name="product" value="" placeholder="Search for products" data-width="70%" class="p_0 pl_8 bg_none">
+	  
+	    <select name="categories" id="categories" class="border border_left border_neutral ml_3 p_0 pl_8 bg_none" data-width="30%">
+	  
+	 
+	  <?php
+	  
+	  foreach($cat_data as $cat_name => $ids) {
+	  
+	  ?>
+	    <option value="<?php echo $ids; ?>"><?php echo ucwords(strtolower($cat_name)); ?></option>
+	  
+	  <?php } ?>
+	  
+	  
+	  </select>
+	  
+	  
+	  </div>
+
+    </div>    
+ 
+ 
+
+
+  
+     <div class="grid_container" data-aos="fade-up" id="products">
+	 
+	
+	      
+	  
+	  
+	   <?php foreach($products as $id => $product) { ?>
+	        
+			 
+			<?php if($product['minPriceDetails']['amount'] > 0) { 
+		
+			?>
+			 
+			
+			 
+			
+			  <div id="<?php echo $product['id']; ?>" data-product-id="<?php echo $product['id']; ?>" class="active_items p_4 radius_medium product bg_secondary mb_4 flex_rows_4">
+               <div class="">
+			     <div class="product_image" data-src="https://imagedelivery.net/<?= $product['product']['thumbnailCfImageId']; ?>/productCard"></div>
+                
+             
+			 
+              </div><div class="product_info">
+                <div class="product_title weight_semibold  vmiddle theme_text_gradient"> <?= $product['product']['title']; ?></div>
+                <div class="pt_2 pb_2 text_small mb_8 none" data-height="40px"><?= $product['product']['shortDescription']; ?></div>
+  
+  <?php
+   $price = $product['minPriceDetails']['amount'];
+  
+  $price_parts = explode('.', $price);
+  if (strpos($price, '.') === false) {
+    $price .= '.00';
+  } else if (count($price_parts) == 2 && strlen($price_parts[1]) == 1) {
+    // if the last digit of the formatted price is 0, add another 0 at the end
+    $price .= '0';
+  }
+  
+  ?>
+  
+               <div class="mb_8"><?= $product['minPriceDetails']['currency']; ?> <?=  $price ?></div>
+              
+            
+			    <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>" data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#" class=" ml_auto mr_auto radius_medium weight_semibold mt_4 block pl_4 pr_4 pb_3 pt_3 align_center button_solid">
+                  Purchase 
+                </button>
+			     
+			
+			 
+              </div>
+          </div>  
+
+          <?php } ?>
+	   <?php } ?>
+          
+		  
+     </div>
+  </div>  
+</section>
 
 
 

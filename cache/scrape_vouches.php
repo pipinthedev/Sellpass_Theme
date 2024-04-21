@@ -9,7 +9,7 @@ require_once 'simple_html_dom.php';
   
   if ((file_exists($cache_file) && (time() - filemtime($cache_file) > $cache_time)) || (isset($_GET['action']) && $_GET['action'] == "update_vouches")) {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://hqlogs.sellpass.io/products');
+    curl_setopt($ch, CURLOPT_URL, 'https://psyo.sellpass.io/reviews');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $file = curl_exec($ch);
 

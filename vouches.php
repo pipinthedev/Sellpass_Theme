@@ -1,50 +1,70 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Psyo - Vouches</title>
-    <?php include 'headerinclude.php' ?>
-  </head>
-  <body class="bg_primary color_primary">
-   <div class="bg_gradient"></div>
-   <div class="bg_container position_relative">
-    <?php include 'header.php' ?>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Feedback Slideshow</title>
+<style>
+  .feedback-container {
+    width: 100%;
+    overflow: hidden;
+  }
 
+  .feedback-slide-container {
+    display: flex;
+    animation: slideIn 60s linear infinite;
+  }
 
- <?php include 'cache/scrape_vouches.php' ?>
-<section class="">
-   <div class="container pt p_6 mt_12">
-     <div class="mb_6 text_large align_center weight_semibold">Vouches</div>
-	    <div class="grid_vouches_container">
-		<?php 
-	        foreach($feedbacks as $feedback) {
-			      $dateTime = new DateTime($feedback['createdAt']);
+  .feedback-slide-container:hover {
+    animation-play-state: paused;
+  }
 
+  .feedback-card {
+    width: 600px; 
+    height: 200px; /* Fixed height */
+    margin: 10px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Adjusted for spacing */
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    font-weight: bold;
+    text-align: center;
+  }
 
-$formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+  @keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+  }
 
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .feedback-card {
+      width: 90%;
+      height: auto;
+    }
+  }
+</style>
+</head>
+<body>
 
-			?>
-			
-			  <div class="p_4 radius_medium m_2 bg_secondary">
-			     <?= $formattedDateTime; ?> <span class="float_right"><?= $feedback['rating']; ?> / 5</span>
-			      
-				<div class="mt2_2">
-			    <?= $feedback['comment']; ?>
-				</div>
-				  </div>
-			 
-			<?php 
-			
-			}
-			
-			?>
+<div class="feedback-container">
+  <div class="feedback-slide-container">
+  <?php include 'cache/scrape_vouches.php'; ?>
+  
+  <?php foreach($feedbacks as $feedback): ?>
+    <div class="feedback-card">
+      <p class="feedback-rating"><?= str_repeat('⭐', $feedback['rating']); ?></p>
+      <p class="feedback-comment"><?= htmlspecialchars($feedback['comment']); ?></p>
+      <p class="feedback-date"><?= date('F j, Y', strtotime($feedback['createdAt'])); ?></p>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</div>
 
-
-
-	 </div>  
-</section>
-
-   
-    <?php include 'footer.php' ?>
-  </body>
+</body>
 </html>
