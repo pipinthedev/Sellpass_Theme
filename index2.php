@@ -9,7 +9,7 @@
 
 
   <?php include 'header.php';
-  $shop_name = "hqlogs";
+  $shop_name = "psyo";
   function getRandomNumber($min, $max)
   {
     return rand($min, $max);
@@ -216,6 +216,126 @@
       transform: none;
       /* Removes scale effect */
     }
+
+    /* Container for the category buttons */
+    .category_buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      /* Center the buttons */
+      gap: 10px;
+      /* Spacing between buttons */
+      margin-bottom: 20px;
+      /* Space below the button container */
+    }
+
+    /* Style for each category button */
+    .category_button {
+      border: 1px solid transparent;
+      /* Adjust border size as needed */
+      background-clip: padding-box;
+      border-radius: 20px;
+      /* Rounded borders */
+      padding: 8px 16px;
+      /* Padding inside buttons */
+      background-color: #333;
+      /* Default background color */
+      color: #fff;
+      /* Text color */
+      font-weight: bold;
+      /* Make the text bold */
+      cursor: pointer;
+      text-transform: uppercase;
+      /* UPPERCASE text */
+      transition: background-color 0.3s, color 0.3s, border 0.3s;
+      font-size: 0.875rem;
+      /* Adjust font size as needed */
+    }
+
+    /* Hover effect for buttons */
+    .category_button:hover {
+      background-color: #490468;
+      /* Change color on hover */
+      border: 1px solid #490468;
+      /* Border color on hover */
+    }
+
+    /* Active button style */
+    .category_button.active {
+      background-color: #490468;
+      /* Active button color */
+      color: #fff;
+      /* Active button text color */
+      border: 1px solid #490468;
+      /* Active button border color */
+    }
+
+    @media (max-width: 768px) {
+      .category_buttons {
+        justify-content: space-around;
+      }
+
+      .category_button {
+        flex: 1 0 21%;
+        /* Allow buttons to grow and take equal space */
+        text-align: center;
+        /* Center the text inside the buttons */
+        margin-bottom: 10px;
+        /* Space below each button */
+      }
+    }
+
+
+    .gradient-border-input {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 300px;
+      /* Adjust width as needed */
+    }
+
+    .gradient-border-input::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: 20px;
+      background: linear-gradient(to right, #d70498, #01ECEA);
+      z-index: -1;
+      padding: 1px;
+      /* Controls the size of the gradient border */
+    }
+
+    .gradient-border-input input {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 19px;
+      /* Slightly less than the container to fit inside */
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 1rem;
+      background-color: transparent;
+      /* Ensure input is transparent */
+      z-index: 1;
+      /* Ensure the input is above the gradient */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .gradient-border-input {
+        width: 100%;
+        /* Full width on smaller screens */
+      }
+
+      .gradient-border-input input {
+        padding: 8px 16px;
+        /* Smaller padding on smaller screens */
+      }
+    }
   </style>
 </head>
 
@@ -259,83 +379,71 @@
   </div>
 
   <?php include 'cache/scrape.php'; ?>
-  <section class="pl_4 pb_4 pt_12 pr_4 mt_12 position_relative">
-    <div class="container">
 
-      <div class="text_xlarge align_center mb_2 weight_semibold">Explore Products</div>
-      <div class="align_center mb_8 color_neutral">Check out the variety of products that we provide.</div>
-
-
-      <div class="search_form ml_auto mr_auto align_center  mb_8   flex_persistent" data-width="100%">
-
-        <div
-          class=" bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
+  <section class="px-4 py-12 mt-12 relative">
+    <div class="container mx-auto">
+      <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
+        <div style="border: 1px solid #AB0AB9"
+          class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
 
 
           <input type="text" id="product" name="product" value="" placeholder="Search for products" data-width="70%"
             class="p_0 pl_8 bg_none">
+        </div>
+        <div class="category_buttons">
+          <button class="category_button active" data-category="all">All</button>
+          <?php foreach ($categories as $category): ?>
+            <?php if (strtolower($category['name']) !== 'all'): ?>
+              <button class="category_button" data-category="<?= $category['id']; ?>">
+                <?= htmlspecialchars(ucwords(strtolower($category['name']))); ?>
+              </button>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </div>
 
-          <select name="categories" id="categories" class="border border_left border_neutral ml_3 p_0 pl_8 bg_none"
-            data-width="30%">
 
+        <div id="no-products-message" class="text-center text-lg font-bold"
+          style="display: none; margin-top: 30px !important;">
+          No Products Found
+        </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+          data-aos="fade-up" id="products">
+          <?php foreach ($products as $product): ?>
             <?php
+            $category_ids = [];
+            foreach ($categories as $category) {
+              if (in_array($product['id'], $category['listingIds'])) {
+                $category_ids[] = $category['id'];
+              }
+            }
+            ?>
+            <div
+              class="product flex flex-col justify-between bg-gray-800 rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full"
+              data-category-ids="<?= implode(',', $category_ids); ?>">
+              <div class="p-4 flex justify-center">
+                <img class="object-cover w-full h-36" style="border-radius: 10px !important;"
+                  src="https://imagedelivery.net/<?= htmlspecialchars($product['product']['thumbnailCfImageId']); ?>/productCard"
+                  alt="<?= htmlspecialchars($product['product']['title']); ?>">
+              </div>
+              <div class="p-4 text-center">
+                <p class="text-lg font-semibold text-white"><?= htmlspecialchars($product['product']['title']); ?></p>
+                <p class="text-sm text-gray-400"><?= htmlspecialchars($product['product']['shortDescription'] ?? ''); ?>
+                </p>
+              </div>
+              <div class="px-4 pb-4 mt-auto">
+                <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
+                  data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
+                  class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg"
+                  style="background-color: #AB0AB9;">Buy Now |
+                  <?= $product['minPriceDetails']['currency'] . ' ' . number_format($product['minPriceDetails']['amount'], 2); ?></button>
+              </div>
+            </div>
+          <?php endforeach; ?>
 
-            foreach ($cat_data as $cat_name => $ids) {
-
-              ?>
-              <option value="<?php echo $ids; ?>"><?php echo ucwords(strtolower($cat_name)); ?></option>
-
-            <?php } ?>
-
-
-          </select>
 
 
         </div>
-
-      </div>
-  </section>
-
-  <?php include 'cache/scrape.php'; ?>
-  <section class="px-4 py-12 mt-12 relative">
-    <div class="container mx-auto">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" data-aos="fade-up"
-        id="products">
-        <?php if (!empty($products)): ?>
-          <?php foreach ($products as $id => $product): ?>
-            <?php if (isset($product['minPriceDetails']['amount']) && $product['minPriceDetails']['amount'] > 0 && isset($product['product'])):
-              $price = number_format($product['minPriceDetails']['amount'], 2, '.', '');
-              ?>
-              <div id="<?php echo htmlspecialchars($product['id']); ?>"
-                class="flex flex-col justify-between bg-gray-800 rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full">
-                <div>
-                  <div class="p-4 flex justify-center">
-                    <img class="object-cover w-full h-36" style="max-width: 500px; max-height: 142px; border-radius: 10px !important;"
-                      src="https://imagedelivery.net/<?php echo htmlspecialchars($product['product']['thumbnailCfImageId']); ?>/productCard"
-                      alt="<?php echo htmlspecialchars($product['product']['title']); ?>">
-                  </div>
-                  <div class="p-4 text-center">
-                    <p class="text-lg font-semibold text-white"><?php echo htmlspecialchars($product['product']['title']); ?>
-                    </p>
-                   
-                    <p class="text-sm text-gray-400">
-                      <?php echo htmlspecialchars($product['product']['shortDescription'] ?? ''); ?></p>
-                  </div>
-                </div>
-                <div class="px-4 pb-4 mt-auto">
-                  <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
-                  data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
-                    class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg transition-all duration-300" style="background-color: #AB0AB9 !important; color: #FFFFFF !important">
-                    Buy Now | <?php echo htmlspecialchars($product['minPriceDetails']['currency']); ?>       <?php echo $price; ?>
-                  </button>
-                </div>
-              </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p class="text-center text-white">No products found.</p>
-        <?php endif; ?>
       </div>
     </div>
   </section>
@@ -352,80 +460,59 @@
 
 
 
+  <?php include 'footer.php' ?>
   <!-- Footer -->
   <footer class="text-center py-5 text-xs">
     <p>&copy; Your Company. All rights reserved.</p>
   </footer>
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script>
-
-
     $(document).ready(function () {
-      const productInput = $('#product');
-      const searchBtn = $('#search');
-      const categorySelect = $('select');
-      const products = $('.product');
+      var filterProducts = function () {
+        var searchText = $('#product').val().toLowerCase();
+        var selectedCategory = $('.category_button.active').data('category');
+        var productFound = false;
 
-      categorySelect.on('change', function () {
-        const selectedValue = categorySelect.val().split(',');
+        $('.product').each(function () {
+          var productName = $(this).find('.text-lg').text().toLowerCase();
+          var categories = $(this).data('category-ids').toString().split(',');
+          var isCategoryMatch = selectedCategory === 'all' || categories.includes(selectedCategory.toString());
+          var isSearchMatch = productName.includes(searchText);
 
-        products.each(function () {
-          const productId = $(this).attr('data-product-id');
-
-          if (selectedValue.includes(productId)) {
-
-            $(this).addClass("active_items").show();
+          if (isCategoryMatch && isSearchMatch) {
+            $(this).show();
+            productFound = true;
           } else {
-
-            $(this).removeClass("active_items").hide();
+            $(this).hide();
           }
         });
+
+        // Toggle the visibility of the no-products message
+        $('#no-products-message').toggle(!productFound);
+      };
+
+      // Event listener for category buttons
+      $('.category_button').on('click', function () {
+        $('.category_button').removeClass('active');
+        $(this).addClass('active');
+        filterProducts();
       });
 
-      $('[name=product]').on('input', function () {
-        const searchText = productInput.val().toLowerCase();
+      // Event listener for the search input
+      $('#product').on('input', filterProducts);
 
-        products.each(function () {
-          if ($(this).is('.active_items')) {
-
-
-
-            const productName = $(this).find('.product_title').text().toLowerCase();
-
-            if (productName.includes(searchText)) {
-              $(this).show();
-            } else {
-              $(this).hide();
-            }
-          }
-        });
-      });
+      // Initial filter to apply on page load
+      filterProducts();
     });
-
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = entry.target;
-          const url = target.getAttribute('data-src');
-          target.style.backgroundImage = `url(${url})`;
-          observer.unobserve(target);
-        }
-      });
-    });
-
-    const targets = document.querySelectorAll('.product_image');
-    targets.forEach(target => {
-      observer.observe(target);
-    });
-
-
-
-
   </script>
 
-  <?php include 'footer.php' ?>
+
+
+
+
+
+
 
 </body>
 
