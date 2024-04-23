@@ -4,11 +4,11 @@
 <head>
 
 
-  <?php include 'headerinclude.php' ?>
+  <?php include 'includes/headerinclude.php' ?>
 
 
 
-  <?php include 'header.php';
+  <?php include 'includes/header.php';
   $shop_name = "psyo";
   function getRandomNumber($min, $max)
   {
@@ -19,324 +19,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Product Grid</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .border-gradient {
-      background: linear-gradient(to right, #7F00FF, #E100FF);
-      border-radius: 9999px;
-      padding: 1px;
-    }
-
-    .border-gradient input {
-      background: #4C0070;
-      border-radius: 9999px;
-    }
-
-    .search-icon {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%239F7AEA"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 11-2 0 1 1 0 012 0zm-1 9a5 5 0 114-5 5 5 0 01-4 5z" clip-rule="evenodd" /></svg>');
-      width: 20px;
-      height: 20px;
-      margin-right: 16px;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 2.5rem;
-      pointer-events: none;
-    }
-
-    .gradient-border {
-      background: linear-gradient(to right, #01ECEA, #E100FF);
-      border-radius: 0.5rem;
-      padding: 1px;
-    }
-
-    .navbar-inner {
-      background: #1F2937;
-      border-radius: calc(0.5rem - 1px);
-      padding: 1rem;
-    }
-
-    @media (min-width: 768px) {
-      .navbar-inner {
-        padding: 1rem 2rem;
-      }
-    }
-
-
-    .nav-link {
-      font-size: 1.125rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-
-    .login-button {
-      background-color: #AB0AB9;
-      padding: 12px 24px;
-      border-radius: 0.375rem;
-      font-size: 1.125rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .login-icon {
-      display: inline-block;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      width: 1.5em;
-      height: 1.5em;
-      content: "";
-    }
-
-
-    .blurred-image {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 50%;
-      background: url('removed.png') no-repeat;
-      background-size: 150%;
-      background-position: left center;
-      filter: blur(1000px);
-      z-index: -1;
-    }
-
-    .border-pink {
-      -webkit-text-stroke: 1px #d70498;
-    }
-
-    .border-blue {
-      -webkit-text-stroke: 1px #01ECEA;
-    }
-
-    .border-split {
-      background: linear-gradient(to right, #d70498 50%, #01ECEA 50%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      -webkit-text-stroke: 1px transparent;
-    }
-
-    .gradient-text {
-      font-size: 3rem;
-      /* Adjust the font size as needed */
-      font-weight: bold;
-      background: linear-gradient(to right, #d70498, #01ECEA);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-      /* Required for -webkit-background-clip */
-      text-shadow:
-        0 0 2px rgba(215, 4, 152, 0.5),
-        0 0 5px rgba(6, 6, 218, 0.5),
-        0 0 10px rgba(215, 4, 152, 0.5),
-        /* Blur and spread out the pink color */
-        0 0 15px rgba(6, 6, 218, 0.5);
-      /* Blur and spread out the blue color */
-      -webkit-text-stroke: 1px transparent;
-      /* Required to create the border effect */
-    }
-
-
-    .gradient-text::after {
-      content: attr(data-text);
-      /* Use the text from data-text attribute */
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: -1;
-      background: linear-gradient(to right, #d70498, #01ECEA);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: blur(1px);
-      /* Apply blur to the border */
-      opacity: 0.2;
-      /* You can adjust the opacity for the blur effect */
-    }
-
-    .gradient-borders {
-      background: linear-gradient(to right, #d70498, #01ECEA);
-      padding: 3px;
-      border-radius: 0.5rem;
-    }
-
-    .gradient-borders button {
-      background-color: transparent;
-      color: white;
-      border: none;
-      padding: 0.75rem 2rem;
-    }
-
-    .product-button {
-      padding: 0;
-      /* Remove padding to make the button full width */
-    }
-
-    .btn-product {
-      background-color: #6D28D9;
-      /* Primary purple */
-      color: white;
-      font-weight: bold;
-      padding: 10px 0;
-      /* Y padding 10px, X padding 0 for full width */
-      display: block;
-      /* Makes the anchor tag behave like a block element */
-      text-align: center;
-      /* Centers the text inside the button */
-      text-decoration: none;
-      /* Removes underline from anchor tag */
-      border: 1px solid transparent;
-      /* Transparent border to maintain button size */
-      outline: none;
-      /* Removes outline */
-      cursor: pointer;
-      /* Changes cursor to pointer */
-      border-radius: 5px;
-      /* 5px border radius */
-      transition: background-color 300ms, transform 300ms, border-color 300ms;
-      /* Smooth transition for hover effects */
-      width: 100%;
-      /* Full width */
-      margin: auto;
-      /* Centers the button in case there's any margin issue */
-    }
-
-    .btn-product:hover {
-      background-color: transparent;
-      /* Transparent background on hover */
-      color: white;
-      /* Keep text color white */
-      border-color: #5B21B6;
-      /* Purple border color on hover */
-      transform: none;
-      /* Removes scale effect */
-    }
-
-    /* Container for the category buttons */
-    .category_buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      /* Center the buttons */
-      gap: 10px;
-      /* Spacing between buttons */
-      margin-bottom: 20px;
-      /* Space below the button container */
-    }
-
-    /* Style for each category button */
-    .category_button {
-      border: 1px solid transparent;
-      /* Adjust border size as needed */
-      background-clip: padding-box;
-      border-radius: 20px;
-      /* Rounded borders */
-      padding: 8px 16px;
-      /* Padding inside buttons */
-      background-color: #333;
-      /* Default background color */
-      color: #fff;
-      /* Text color */
-      font-weight: bold;
-      /* Make the text bold */
-      cursor: pointer;
-      text-transform: uppercase;
-      /* UPPERCASE text */
-      transition: background-color 0.3s, color 0.3s, border 0.3s;
-      font-size: 0.875rem;
-      /* Adjust font size as needed */
-    }
-
-    /* Hover effect for buttons */
-    .category_button:hover {
-      background-color: #490468;
-      /* Change color on hover */
-      border: 1px solid #490468;
-      /* Border color on hover */
-    }
-
-    /* Active button style */
-    .category_button.active {
-      background-color: #490468;
-      /* Active button color */
-      color: #fff;
-      /* Active button text color */
-      border: 1px solid #490468;
-      /* Active button border color */
-    }
-
-    @media (max-width: 768px) {
-      .category_buttons {
-        justify-content: space-around;
-      }
-
-      .category_button {
-        flex: 1 0 21%;
-        /* Allow buttons to grow and take equal space */
-        text-align: center;
-        /* Center the text inside the buttons */
-        margin-bottom: 10px;
-        /* Space below each button */
-      }
-    }
-
-
-    .gradient-border-input {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 300px;
-      /* Adjust width as needed */
-    }
-
-    .gradient-border-input::before {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: -1px;
-      right: -1px;
-      bottom: -1px;
-      border-radius: 20px;
-      background: linear-gradient(to right, #d70498, #01ECEA);
-      z-index: -1;
-      padding: 1px;
-      /* Controls the size of the gradient border */
-    }
-
-    .gradient-border-input input {
-      width: 100%;
-      padding: 12px 20px;
-      border-radius: 19px;
-      /* Slightly less than the container to fit inside */
-      border: none;
-      outline: none;
-      color: white;
-      font-size: 1rem;
-      background-color: transparent;
-      /* Ensure input is transparent */
-      z-index: 1;
-      /* Ensure the input is above the gradient */
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .gradient-border-input {
-        width: 100%;
-        /* Full width on smaller screens */
-      }
-
-      .gradient-border-input input {
-        padding: 8px 16px;
-        /* Smaller padding on smaller screens */
-      }
-    }
-  </style>
 </head>
 
 <body class="bg-gradient-to-b from-gray-900 to-black text-white font-sans">
@@ -378,7 +61,7 @@
     </div>
   </div>
 
-  <?php include 'cache/scrape.php'; ?>
+  <?php include 'server/scrape.php'; ?>
 
   <section class="px-4 py-12 mt-12 relative">
     <div class="container mx-auto">
@@ -454,66 +137,49 @@
 
 
 
-
-
-
-
-
-
-  <?php include 'footer.php' ?>
-  <!-- Footer -->
   <footer class="text-center py-5 text-xs">
     <p>&copy; Your Company. All rights reserved.</p>
   </footer>
+  <?php include 'includes/footer.php' ?>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <script>
-    $(document).ready(function () {
-      var filterProducts = function () {
-        var searchText = $('#product').val().toLowerCase();
-        var selectedCategory = $('.category_button.active').data('category');
-        var productFound = false;
 
-        $('.product').each(function () {
-          var productName = $(this).find('.text-lg').text().toLowerCase();
-          var categories = $(this).data('category-ids').toString().split(',');
-          var isCategoryMatch = selectedCategory === 'all' || categories.includes(selectedCategory.toString());
-          var isSearchMatch = productName.includes(searchText);
+$(document).ready(function () {
+  var filterProducts = function () {
+    var searchText = $("#product").val().toLowerCase();
+    var selectedCategory = $(".category_button.active").data("category");
+    var productFound = false;
 
-          if (isCategoryMatch && isSearchMatch) {
-            $(this).show();
-            productFound = true;
-          } else {
-            $(this).hide();
-          }
-        });
+    $(".product").each(function () {
+      var productName = $(this).find(".text-lg").text().toLowerCase();
+      var categories = $(this).data("category-ids").toString().split(",");
+      var isCategoryMatch =
+        selectedCategory === "all" ||
+        categories.includes(selectedCategory.toString());
+      var isSearchMatch = productName.includes(searchText);
 
-        // Toggle the visibility of the no-products message
-        $('#no-products-message').toggle(!productFound);
-      };
-
-      // Event listener for category buttons
-      $('.category_button').on('click', function () {
-        $('.category_button').removeClass('active');
-        $(this).addClass('active');
-        filterProducts();
-      });
-
-      // Event listener for the search input
-      $('#product').on('input', filterProducts);
-
-      // Initial filter to apply on page load
-      filterProducts();
+      if (isCategoryMatch && isSearchMatch) {
+        $(this).show();
+        productFound = true;
+      } else {
+        $(this).hide();
+      }
     });
-  </script>
 
+    $("#no-products-message").toggle(!productFound);
+  };
 
+  $(".category_button").on("click", function () {
+    $(".category_button").removeClass("active");
+    $(this).addClass("active");
+    filterProducts();
+  });
 
+  $("#product").on("input", filterProducts);
 
+  filterProducts();
+});
 
-
-
-
+</script>
 </body>
-
 </html>

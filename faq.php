@@ -2,12 +2,13 @@
 <html>
   <head>
     <title>Psyo - FAQ</title>
-    <?php include 'headerinclude.php' ?>
+    <?php include 'includes/headerinclude.php' ?>
   </head>
+  <?php include 'includes/header.php'; ?>
   <body class="bg_primary color_primary">
    <div class="bg_gradient"></div>
    <div class="bg_container position_relative">
-    <?php include 'header.php' ?>
+
 
 
 
@@ -31,6 +32,6 @@ every account we sell is at our product page.
 </section>
 
    
-    <?php include 'footer.php' ?>
+    <?php include 'includes/footer.php' ?>
   </body>
 </html>

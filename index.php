@@ -1,298 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Psyo.io</title>
-  <?php include 'headerinclude.php' ?>
+
+
+  <?php include 'includes/headerinclude.php' ?>
+
+
+
+  <?php
+  $shop_name = "psyo";
+  function getRandomNumber($min, $max)
+  {
+    return rand($min, $max);
+  }
+
+  ?>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class=" color_primary bg_primary">
-  <div class="bg_gradient"></div>
-  <div class="bg_container position_relative">
+<body class="bg-gradient-to-b from-gray-900 to-black text-white font-sans">
 
-    <?php include 'header.php';
-    $shop_name = "psyo";
-    function getRandomNumber($min, $max)
-    {
-      return rand($min, $max);
-    }
+<?php include 'includes/header.php'; ?>
 
-    ?>
-
-
-    <section class="hero px_5 pt_22 pb_22 pl_4 pr_4 position_relative">
-
-
-      <div class="flex_container container aos-init aos-animate" data-aos="fade-left">
-        <div>
-          <div class="text_4xlarge weight_bold mb_4 theme_text_gradient">Welcome to Psyo.io</div>
-          <div class="mb_8 color_neutral">Your destination for affordible and high-quality products without breaking the
-            bank. Immerse yourself in a curated collection of high-quality accounts. Experience not only the allure of
-            our offers but also the comfort of our reliable support team, always ready to assist you.
-          </div>
-        </div>
-        <div data-width="600px" class=" ">
-
-          <div class="hero_image position_relative"></div>
-
-
-        </div>
+  <div class="blurred-image-container">
+    <div class="blurred-image"></div>
+    <div class="content text-center py-12">
+      <h1 class="text-5xl font-bold mb-3 mt-4">
+        <span class="border-pink">EXP</span><span>LOR</span><span>E THE HIGH </span><span>QUAL</span><span>ITY</span>
+        <span>PROD</span><span class="border-blue">UCTS</span>
+      </h1>
+      <p class="text-xl gradient-text mb-6">PROVIDING THE MOST HQ & CHEAPEST ACCOUNTS IN THE MARKET</p> <br>
+      <div class="gradient-borders inline-block">
+        <button class="rounded-full font-bold text-lg">PRODUCTS</button>
       </div>
-
-    </section>
-
-
-
-    <section class="aos-init aos-animate" data-aos="zoom-in-up">
-      <div class="container pt_12 pt_12">
-        <div class="flex_container flex_wrap -m_4">
-          <div class="flex_rows_4 p_4 align_center bg_transparent m_2 radius_small">
-
-
-            <div class="mb_3 text_large  weight_semibold">
-              Daily
-            </div>
-
-            <div class="">
-              Updates
-            </div>
-
-          </div>
-
-          <div class="flex_rows_4 p_4  align_center bg_transparent m_2 radius_small">
-
-
-            <div class="mb_3 text_2xlarge  weight_semibold">
-              50+
-            </div>
-
-            <div class="">
-              Products
-            </div>
-
-          </div>
-
-          <div class="flex_rows_4 p_4  align_center bg_transparent m_2 radius_small">
-
-
-            <div class="mb_3 text_2xlarge  weight_semibold">
-              200+
-            </div>
-
-            <div class="">
-              Orders
-            </div>
-
-          </div>
-
-          <div class="flex_rows_4 p_4  align_center bg_transparent m_2 radius_small">
-
-
-            <div class="mb_3 text_2xlarge  weight_semibold">
-              Quick
-            </div>
-
-            <div class="">
-              Support
-            </div>
-
-          </div>
-
-
-
-        </div>
-      </div>
-    </section>
+    </div>
   </div>
 
-  <?php include 'cache/scrape.php' ?>
-  <section class="pl_4 pb_4 pt_12 pr_4 mt_12 position_relative">
-    <div class="container">
+  <?php include 'server/scrape.php'; ?>
 
-      <div class="text_xlarge align_center mb_2 weight_semibold">Explore Products</div>
-      <div class="align_center mb_8 color_neutral">Check out the variety of products that we provide.</div>
-
-
-      <div class="search_form ml_auto mr_auto align_center  mb_8   flex_persistent" data-width="100%">
-
-        <div
-          class=" bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
+  <section class="px-4 py-12 mt-12 relative">
+    <div class="container mx-auto">
+      <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
+        <div style="border: 1px solid #AB0AB9"
+          class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
 
 
           <input type="text" id="product" name="product" value="" placeholder="Search for products" data-width="70%"
             class="p_0 pl_8 bg_none">
+        </div>
+        <div class="category_buttons">
+          <button class="category_button active" data-category="all">All</button>
+          <?php foreach ($categories as $category): ?>
+            <?php if (strtolower($category['name']) !== 'all'): ?>
+              <button class="category_button" data-category="<?= $category['id']; ?>">
+                <?= htmlspecialchars(ucwords(strtolower($category['name']))); ?>
+              </button>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </div>
 
-          <select name="categories" id="categories" class="border border_left border_neutral ml_3 p_0 pl_8 bg_none"
-            data-width="30%">
 
+        <div id="no-products-message" class="text-center text-lg font-bold"
+          style="display: none; margin-top: 30px !important;">
+          No Products Found
+        </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+          data-aos="fade-up" id="products">
+          <?php foreach ($products as $product): ?>
             <?php
+            $category_ids = [];
+            foreach ($categories as $category) {
+              if (in_array($product['id'], $category['listingIds'])) {
+                $category_ids[] = $category['id'];
+              }
+            }
+            ?>
+            <div
+              class="product flex flex-col justify-between bg-gray-800 rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full"
+              data-category-ids="<?= implode(',', $category_ids); ?>">
+              <div class="p-4 flex justify-center">
+                <img class="object-cover w-full h-36" style="border-radius: 10px !important;"
+                  src="https://imagedelivery.net/<?= htmlspecialchars($product['product']['thumbnailCfImageId']); ?>/productCard"
+                  alt="<?= htmlspecialchars($product['product']['title']); ?>">
+              </div>
+              <div class="p-4 text-center">
+                <p class="text-lg font-semibold text-white"><?= htmlspecialchars($product['product']['title']); ?></p>
+                <p class="text-sm text-gray-400"><?= htmlspecialchars($product['product']['shortDescription'] ?? ''); ?>
+                </p>
+              </div>
+              <div class="px-4 pb-4 mt-auto">
+                <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
+                  data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
+                  class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg"
+                  style="background-color: #AB0AB9;">Buy Now |
+                  <?= $product['minPriceDetails']['currency'] . ' ' . number_format($product['minPriceDetails']['amount'], 2); ?></button>
+              </div>
+            </div>
+          <?php endforeach; ?>
 
-            foreach ($cat_data as $cat_name => $ids) {
-
-              ?>
-              <option value="<?php echo $ids; ?>"><?php echo ucwords(strtolower($cat_name)); ?></option>
-
-            <?php } ?>
-
-
-          </select>
 
 
         </div>
-
-      </div>
-
-
-
-
-
-      <div class="grid_container" data-aos="fade-up" id="products">
-
-
-
-
-
-        <?php foreach ($products as $id => $product) { ?>
-
-
-          <?php if ($product['minPriceDetails']['amount'] > 0) {
-
-            ?>
-
-
-
-
-            <div id="<?php echo $product['id']; ?>" data-product-id="<?php echo $product['id']; ?>"
-              class="active_items p_4 radius_medium product bg_secondary mb_4 flex_rows_4">
-              <div class="">
-                <div class="product_image"
-                  data-src="https://imagedelivery.net/<?= $product['product']['thumbnailCfImageId']; ?>/productCard"></div>
-
-
-
-              </div>
-              <div class="product_info">
-                <div class="product_title weight_semibold  vmiddle theme_text_gradient">
-                  <?= $product['product']['title']; ?></div>
-                <div class="pt_2 pb_2 text_small mb_8 none" data-height="40px">
-                  <?= $product['product']['shortDescription']; ?></div>
-
-                <?php
-                $price = $product['minPriceDetails']['amount'];
-
-                $price_parts = explode('.', $price);
-                if (strpos($price, '.') === false) {
-                  $price .= '.00';
-                } else if (count($price_parts) == 2 && strlen($price_parts[1]) == 1) {
-                  // if the last digit of the formatted price is 0, add another 0 at the end
-                  $price .= '0';
-                }
-
-                ?>
-
-                <div class="mb_8"><?= $product['minPriceDetails']['currency']; ?>     <?= $price ?></div>
-
-
-                <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
-                  data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
-                  class=" ml_auto mr_auto radius_medium weight_semibold mt_4 block pl_4 pr_4 pb_3 pt_3 align_center button_solid">
-                  Purchase
-                </button>
-
-
-
-              </div>
-            </div>
-
-          <?php } ?>
-        <?php } ?>
-
-
       </div>
     </div>
   </section>
-
-
-
-
-
-
-  <?php include 'footer.php' ?>
-
-
-
-
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <footer class="text-center py-5 text-xs">
+    <p>&copy; Testing shop</p>
+  </footer>
+  <?php include 'includes/footer.php' ?>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
 
+$(document).ready(function () {
+  var filterProducts = function () {
+    var searchText = $("#product").val().toLowerCase();
+    var selectedCategory = $(".category_button.active").data("category");
+    var productFound = false;
 
-    $(document).ready(function () {
-      const productInput = $('#product');
-      const searchBtn = $('#search');
-      const categorySelect = $('select');
-      const products = $('.product');
+    $(".product").each(function () {
+      var productName = $(this).find(".text-lg").text().toLowerCase();
+      var categories = $(this).data("category-ids").toString().split(",");
+      var isCategoryMatch =
+        selectedCategory === "all" ||
+        categories.includes(selectedCategory.toString());
+      var isSearchMatch = productName.includes(searchText);
 
-      categorySelect.on('change', function () {
-        const selectedValue = categorySelect.val().split(',');
-
-        products.each(function () {
-          const productId = $(this).attr('data-product-id');
-
-          if (selectedValue.includes(productId)) {
-
-            $(this).addClass("active_items").show();
-          } else {
-
-            $(this).removeClass("active_items").hide();
-          }
-        });
-      });
-
-      $('[name=product]').on('input', function () {
-        const searchText = productInput.val().toLowerCase();
-
-        products.each(function () {
-          if ($(this).is('.active_items')) {
-
-
-
-            const productName = $(this).find('.product_title').text().toLowerCase();
-
-            if (productName.includes(searchText)) {
-              $(this).show();
-            } else {
-              $(this).hide();
-            }
-          }
-        });
-      });
+      if (isCategoryMatch && isSearchMatch) {
+        $(this).show();
+        productFound = true;
+      } else {
+        $(this).hide();
+      }
     });
 
+    $("#no-products-message").toggle(!productFound);
+  };
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = entry.target;
-          const url = target.getAttribute('data-src');
-          target.style.backgroundImage = `url(${url})`;
-          observer.unobserve(target);
-        }
-      });
-    });
+  $(".category_button").on("click", function () {
+    $(".category_button").removeClass("active");
+    $(this).addClass("active");
+    filterProducts();
+  });
 
-    const targets = document.querySelectorAll('.product_image');
-    targets.forEach(target => {
-      observer.observe(target);
-    });
+  $("#product").on("input", filterProducts);
 
+  filterProducts();
+});
 
-
-
-  </script>
-
-
+</script>
 </body>
-
 </html>
