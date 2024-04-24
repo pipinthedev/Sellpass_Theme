@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./asset/css/index.css">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <meta content="Psyo.io" property="og:title">
     <meta content="Variety of Accounts at The Cheapest Prices!" property="og:description">
     <meta name="viewport" content="width=device-width">
 	

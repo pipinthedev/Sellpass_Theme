@@ -4,132 +4,145 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .scrolling-reviews {
             overflow: hidden;
             position: relative;
-        }
-
-        .scroll-container {
-            width: 100%;
-            overflow: hidden;
+            height: 200px;
+            display: flex;
+            align-items: center;
         }
 
         .slide-container {
             display: flex;
-            animation: scroll-left 30s linear infinite;
-            margin-top: 20px;
+            will-change: transform;
         }
 
         .slide-card {
             border-radius: 25px;
-            padding: 20px;
-            background-color: rgb(39, 40, 40);
-            width: 350px !important;
-            max-width: 350px !important;
-            height: 150px;
-            margin-right: 30px;
+            padding: 15px;
+            background-color: #1b1c1d;
+            width: 300px;
+            height: auto;
+            margin-right: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: Arial, sans-serif;
+            position: relative;
         }
 
+        .slide-card h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(100%);
+        .slide-card small,
+        .date-display {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        .date-display {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .slide-card.active {
+            box-shadow: 0 0 5px 3px #0ad9ea;
+            filter: none;
+        }
+
+        .blur-effect {
+            filter: blur(2px);
+        }
+
+        @media (max-width: 768px) {
+            .slide-card {
+                width: 280px;
+                padding: 10px;
             }
-
-            100% {
-                transform: translateX(-100%);
-            }
         }
 
-        /* Pause animation on hover */
-        .scrolling-reviews:hover .slide-container {
-            animation-play-state: paused;
+        .rating {
+            display: inline-block;
+            margin-right: 10px;
         }
-
-        .masking-div-left, .masking-div-right {
-    flex: 1;
-    height: 50px;
-    backdrop-filter: blur(200px);
-    -webkit-backdrop-filter: blur(200px);
-    -webkit-filter: blur(200px);
-  -moz-filter: blur(200px);
-  -o-filter: blur(200px);
-  -ms-filter: blur(200px);
-  filter: blur(200px);
-  pointer-events: none;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
     </style>
 </head>
 
 <body>
     <section>
-
-        <div class="content-description" style="margin-top: 40px !important;">
-            <span class="main-title">What our Customer Acknowledge</span>
+        <div class="content-description" style="margin-top: 40px;">
+            <span class="main-title" style="color: #0ad9ea;">What our Customer Acknowledge</span>
             <div class="sub-title">
-                <span>About our </span><span id="dynamic-content2" class="dynamic-part2">Stocks</span> <br>
-            </div> <?php include 'server/scrape_vouches.php'; ?>
-            <div class="masking-div-left"></div> <!-- Left masking div -->
-            <div class="scrolling-reviews">
-                <div class="scroll-container">
-                    <div class="slide-container">
-                        <?php foreach ($feedbacks as $feedback): ?>
-                            <?php
-                            $comment = htmlspecialchars($feedback['comment']);
-                            if (!empty($comment) && strlen($comment) <= 50):
-                                ?>
-                                <div class="slide-card rounded-lg p-6 w-96 max-w-96 h-45 mr-10 bg-gray-800">
-                                    <div class="card-footer">
-                                        <small><?= str_repeat('⭐', $feedback['rating']); ?></small>
-                                    </div>
-                                    <div class="card-header" style="font-weight: bolder !important; margin-bottom: 10px !important;margin-top: 10px !important; font-size: 15px !important">
-                                        <h3><?= $comment; ?></h3>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                <span>About our </span><span id="dynamic-content2" class="dynamic-part2" style="color:  #de0ab1;">Stocks</span> <br>
+                <div class="scrolling-reviews">
+                    <div class="slide-container" id="scrollContainer">
+                        <?php
+                        include 'server/scrape_vouches.php';
+                        foreach ($feedbacks as $feedback) {
+                            if (!empty($feedback['comment']) && strlen($feedback['comment']) <= 80) {
+                                $date = new DateTime($feedback['createdAt']);
+                                echo "<div class='slide-card'>";
+                                echo "<small class='rating'>" . str_repeat('⭐', $feedback['rating']) . "</small>";
+                                echo "<h4>" . htmlspecialchars($feedback['comment']) . "</h4>";
+                                echo "<div class='date-display'>" . $date->format('F Y') . "</div>";
+                                echo "</div>";
 
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
-            <div class="masking-div-right"></div
-        </div>
     </section>
 
     <script>
-function scrollReviews(container) {
-            let position = 0;
-            const cardWidth = 400; // Width of each card
-            const speed = 50; // Scroll speed (lower value means faster scroll)
+        function scrollReviews() {
+            const container = document.getElementById('scrollContainer');
+            let currentPosition = 0;
+            const speed = 1; // Adjust scroll speed here
+            let animationFrameId;
 
             function animate() {
-                position -= 1;
-                container.style.transform = `translateX(${position}px)`;
-
-                if (position <= -cardWidth) {
-                    position = 0;
+                currentPosition -= speed;
+                container.style.transform = `translateX(${currentPosition}px)`;
+                if (Math.abs(currentPosition) >= container.firstChild.offsetWidth + 30) {
+                    container.appendChild(container.firstChild);
+                    currentPosition += container.firstChild.offsetWidth + 30;
                 }
-
-                requestAnimationFrame(animate);
+                animationFrameId = requestAnimationFrame(animate);
             }
+
+            container.addEventListener('mouseover', function (event) {
+                if (event.target.classList.contains('slide-card')) {
+                    cancelAnimationFrame(animationFrameId);
+                    event.target.classList.add('active');
+                    document.querySelectorAll('.slide-card').forEach(card => {
+                        if (card !== event.target) card.classList.add('blur-effect');
+                    });
+                }
+            });
+
+            container.addEventListener('mouseout', function (event) {
+                if (event.target.classList.contains('slide-card')) {
+                    requestAnimationFrame(animate);
+                    event.target.classList.remove('active');
+                    document.querySelectorAll('.slide-card').forEach(card => {
+                        card.classList.remove('blur-effect');
+                    });
+                }
+            });
 
             animate();
         }
 
-        window.addEventListener('load', () => {
-            const scrollContainer = document.getElementById('scrollContainer');
-            scrollReviews(scrollContainer);
-        });
-        </script>
+        window.onload = scrollReviews;
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 .border-gradient {
-	background: linear-gradient(to right, #7F00FF, #E100FF);
+	background: linear-gradient(to right, #00d5ff, #2306e6);
 	border-radius: 9999px;
 	padding: 1px;
 }
@@ -22,7 +22,7 @@
 }
 
 .gradient-border {
-	background: linear-gradient(to right, #01ECEA, #E100FF);
+	background: linear-gradient(to right, #02bbff, #3300ff);
 	border-radius: 0.5rem;
 	padding: 1px;
 }
@@ -47,7 +47,7 @@
 }
 
 .login-button {
-	background-color: #AB0AB9;
+	background-color: #0a1eb1;
 	padding: 12px 24px;
 	border-radius: 0.375rem;
 	font-size: 1.125rem;
@@ -82,15 +82,15 @@
 }
 
 .border-pink {
-	-webkit-text-stroke: 1px #d70498;
+	-webkit-text-stroke: 1px #4304d7;
 }
 
 .border-blue {
-	-webkit-text-stroke: 1px #01ECEA;
+	-webkit-text-stroke: 1px #000dff;
 }
 
 .border-split {
-	background: linear-gradient(to right, #d70498 50%, #01ECEA 50%);
+	background: linear-gradient(to right, #1704e8 50%, #0384e1 50%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	-webkit-text-stroke: 1px transparent;
@@ -100,16 +100,16 @@
 	font-size: 3rem;
 
 	font-weight: bold;
-	background: linear-gradient(to right, #d70498, #01ECEA);
+	background: linear-gradient(to right, #2e04d7, #240faa);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	display: inline-block;
 
-	text-shadow: 0 0 2px rgba(215, 4, 152, 0.5),
-		0 0 5px rgba(6, 6, 218, 0.5),
-		0 0 10px rgba(215, 4, 152, 0.5),
+	text-shadow: 0 0 2px rgba(234, 225, 231, 0.5),
+		0 0 5px rgba(6, 63, 218, 0.5),
+		0 0 10px rgba(10, 167, 188, 0.5),
 
-		0 0 15px rgba(6, 6, 218, 0.5);
+		0 0 15px rgba(19, 19, 232, 0.5);
 
 	-webkit-text-stroke: 1px transparent;
 
@@ -125,7 +125,7 @@
 	right: 0;
 	bottom: 0;
 	z-index: -1;
-	background: linear-gradient(to right, #d70498, #01ECEA);
+	background: linear-gradient(to right, #2e04d7, #240faa);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	filter: blur(1px);
@@ -135,13 +135,12 @@
 }
 
 .gradient-borders {
-	background: linear-gradient(to right, #d70498, #01ECEA);
+	background: linear-gradient(to right, #2e04d7, #ff00f7);
 	padding: 3px;
 	border-radius: 0.5rem;
 }
 
 .gradient-borders button {
-	background-color: transparent;
 	color: white;
 	border: none;
 	padding: 0.75rem 2rem;
@@ -351,116 +350,136 @@
 	display: none;
 }
 
+
+
+
 .outer-container {
-    position: relative;
-    width: 100%;
-    height: 50px;
     overflow: hidden;
+    position: relative;
+    height: 50px;
     display: flex;
-    align-items: center;
 }
 
 .scrolling-container {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: 50px;
     position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 .scrolling-content {
+    position: absolute;
     display: flex;
     white-space: nowrap;
-    animation: scrollRightToLeft linear infinite;
-    animation-play-state: running;
 }
 
 .product-name {
     padding: 10px 20px;
-    margin: 0 15px; /* Increased margin for better spacing */
-    background-color: transparent;
-    border-radius: 25px;
-    border: 1px dashed white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: inline-block;
+	border: 1px dashed #FFF !important;
+	border-radius: 50px !important;
 }
 
+
+
+
+
+
 @keyframes scrollRightToLeft {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-100%);
+	}
 }
 
 .scrolling-container:hover .scrolling-content {
-    animation-play-state: paused;
+	animation-play-state: paused;
 }
 
 /* Responsive settings for small devices */
 @media (max-width: 768px) {
-    .product-name {
-        padding: 8px 16px; /* Smaller padding for compact display */
-        margin: 0 10px; /* Smaller margin */
-    }
+	.product-name {
+		padding: 8px 16px;
+		/* Smaller padding for compact display */
+		margin: 0 10px;
+		/* Smaller margin */
+	}
 }
 
 
 
 .content-description {
-    text-align: center; /* Center the text */
-    padding: 20px; /* Add some padding around the text */
-    line-height: 1.2; /* Tighten line height to reduce gap */
+	text-align: center;
+	/* Center the text */
+	padding: 20px;
+	/* Add some padding around the text */
+	line-height: 1.2;
+	/* Tighten line height to reduce gap */
 }
 
 .main-title {
-    font-size: 40px; /* Larger font size */
-    font-weight: bold; /* Bold text */
-    color: #AB0AB9; /* Specific color */
-    display: block; /* Makes the span take the full line */
-    margin: 1; /* Remove default margins */
+	font-size: 40px;
+	/* Larger font size */
+	font-weight: bold;
+	/* Bold text */
+	color: #0ad9ea;
+	/* Specific color */
+	display: block;
+	/* Makes the span take the full line */
+	margin: 1;
+	/* Remove default margins */
 }
 
 
 .sub-title {
-    font-size: 25px;
-    font-weight: bold;
+	font-size: 25px;
+	font-weight: bold;
 }
 
 .dynamic-part {
-    color: #01ECEA; /* Set the dynamic part color to red */
-    position: relative;
-    animation: slideUp 1s ease-in-out;
+	color: #01ECEA;
+	/* Set the dynamic part color to red */
+	position: relative;
+	animation: slideUp 1s ease-in-out;
 }
 
 .dynamic-part2 {
-    color: #01ECEA; /* Set the dynamic part color to red */
-    position: relative;
-    animation: slideUp 1s ease-in-out;
+	color: #01ECEA;
+	/* Set the dynamic part color to red */
+	position: relative;
+	animation: slideUp 1s ease-in-out;
 }
 
 
 
 @keyframes slideUp {
-    0% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+	0% {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .main-title {
-        font-size: 20px; /* Smaller font size for mobile */
-    }
-    .sub-title {
-        font-size: 16px; /* Adjust sub-title size for mobile */
-    }
+	.main-title {
+		font-size: 20px;
+		/* Smaller font size for mobile */
+	}
+
+	.sub-title {
+		font-size: 16px;
+		/* Adjust sub-title size for mobile */
+	}
 }
 
 
@@ -472,11 +491,11 @@
 
 
 #cursor {
-    animation: blink 0.75s step-end infinite;
+	animation: blink 0.75s step-end infinite;
 }
 
 @keyframes blink {
-    50% {
-        color: transparent;
-    }
+	50% {
+		color: transparent;
+	}
 }

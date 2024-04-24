@@ -37,7 +37,7 @@
       </h1>
       <p class="text-xl gradient-text mb-6" id="typer">PROVIDING THE MOST HQ & CHEAPEST ACCOUNTS IN THE MARKET</p> <br>
       <div class="gradient-borders inline-block">
-        <button class="rounded-full font-bold text-lg">PRODUCTS</button>
+        <button class="rounded-full font-bold text-lg"><a href="#prodcs">PRODUCTS</a></button>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
 
   <div class="outer-container">
-    <div class="masking-div-left"></div> <!-- Left masking div -->
+    <div class="masking-div-left"></div>
     <div class="scrolling-container">
       <div class="scrolling-content">
         <?php foreach ($products as $product) {
@@ -55,24 +55,26 @@
         } ?>
       </div>
     </div>
-    <div class="masking-div-right"></div> <!-- Right masking div -->
+    <div class="masking-div-right"></div> <!-- Right masking div for styling -->
   </div>
 
-<?php include('vouches.php'); ?>
 
-  <section class="px-4 py-12 mt-12 relative">
+  <?php include ('vouches.php'); ?>
+
+  <section class="px-4 py-12 mt-3 relative" id="prodcs">
     <div class="container mx-auto">
 
       <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
         <div class="content-description">
-          <span class="main-title">What do we provide?</span>
+          <span class="main-title" style="color: #0ad9ea;">What do we provide?</span>
           <div class="sub-title">
-            <span>The High Quality </span><span id="dynamic-content" class="dynamic-part">Support</span>
+            <span>The High Quality </span><span id="dynamic-content" class="dynamic-part"
+              style="color:  #de0ab1;">Support</span>
           </div>
         </div>
 
 
-        <div style="border: 1px solid #AB0AB9"
+        <div style="border: 1px solid #0ad9ea"
           class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
 
 
@@ -124,7 +126,7 @@
                 <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
                   data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
                   class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg"
-                  style="background-color: #AB0AB9;">Buy Now |
+                  style="background-color:  #130ade ;">Buy Now |
                   <?= $product['minPriceDetails']['currency'] . ' ' . number_format($product['minPriceDetails']['amount'], 2); ?></button>
               </div>
             </div>
@@ -142,6 +144,53 @@
   <?php include 'includes/footer.php' ?>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const scrollContainer = document.querySelector('.scrolling-content');
+      let scrollPosition = 0;
+      const speed = 2;
+      let animationFrameId;
+
+      const items = document.querySelectorAll('.product-name');
+      const gap = 30;
+
+      let totalWidth = 0;
+      items.forEach((item, index) => {
+        totalWidth += item.offsetWidth;
+        if (index < items.length - 1) {
+          totalWidth += gap;
+          item.style.marginRight = gap + 'px';
+        }
+      });
+      scrollContainer.style.width = totalWidth + 'px';
+
+      function moveContent() {
+        scrollPosition -= speed;
+        if (Math.abs(scrollPosition) >= totalWidth) {
+          scrollPosition = window.innerWidth;
+        }
+        scrollContainer.style.transform = `translateX(${scrollPosition}px)`;
+
+        animationFrameId = requestAnimationFrame(moveContent);
+      }
+
+      function stopAnimation() {
+        cancelAnimationFrame(animationFrameId);
+      }
+
+      function startAnimation() {
+        moveContent();
+      }
+
+      scrollContainer.addEventListener('mouseenter', stopAnimation);
+      scrollContainer.addEventListener('mouseleave', startAnimation);
+
+      moveContent();
+    });
+
+
+
 
     $(document).ready(function () {
       var filterProducts = function () {
@@ -210,6 +259,14 @@
       }, 3000);
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+      const baseSpeed = 3000;
+      const isMobile = window.innerWidth <= 768;
+      const speedAdjustment = isMobile ? 1.5 : 1;
+
+      setInterval(() => {
+      }, baseSpeed * speedAdjustment);
+    });
 
 
   </script>
