@@ -20,20 +20,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="index.css">
 </head>
 
 <body class="bg-gradient-to-b from-gray-900 to-black text-white font-sans">
 
-<?php include 'includes/header.php'; ?>
+  <?php include 'includes/header.php'; ?>
 
   <div class="blurred-image-container">
     <div class="blurred-image"></div>
     <div class="content text-center py-12">
       <h1 class="text-5xl font-bold mb-3 mt-4">
-        <span class="border-pink">EXP</span><span>LOR</span><span>E THE HIGH </span><span>QUAL</span><span>ITY</span>
-        <span>PROD</span><span class="border-blue">UCTS</span>
+        <span class="border-pink" id="part1"></span><span id="part2"></span><span id="part3"></span>
+        <span id="part4"></span><span id="part5"></span><span class="border-blue" id="part6"></span><span
+          id="cursor">|..</span>
       </h1>
-      <p class="text-xl gradient-text mb-6">PROVIDING THE MOST HQ & CHEAPEST ACCOUNTS IN THE MARKET</p> <br>
+      <p class="text-xl gradient-text mb-6" id="typer">PROVIDING THE MOST HQ & CHEAPEST ACCOUNTS IN THE MARKET</p> <br>
       <div class="gradient-borders inline-block">
         <button class="rounded-full font-bold text-lg">PRODUCTS</button>
       </div>
@@ -42,9 +44,34 @@
 
   <?php include 'server/scrape.php'; ?>
 
+
+  <div class="outer-container">
+    <div class="masking-div-left"></div> <!-- Left masking div -->
+    <div class="scrolling-container">
+      <div class="scrolling-content">
+        <?php foreach ($products as $product) {
+          $display_name = strlen($product['product']['title']) > 50 ? substr($product['product']['title'], 0, 47) . '...' : $product['product']['title'];
+          echo "<div class='product-name'>{$display_name}</div>";
+        } ?>
+      </div>
+    </div>
+    <div class="masking-div-right"></div> <!-- Right masking div -->
+  </div>
+
+<?php include('vouches.php'); ?>
+
   <section class="px-4 py-12 mt-12 relative">
     <div class="container mx-auto">
+
       <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
+        <div class="content-description">
+          <span class="main-title">What do we provide?</span>
+          <div class="sub-title">
+            <span>The High Quality </span><span id="dynamic-content" class="dynamic-part">Support</span>
+          </div>
+        </div>
+
+
         <div style="border: 1px solid #AB0AB9"
           class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
 
@@ -116,42 +143,129 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
 
-$(document).ready(function () {
-  var filterProducts = function () {
-    var searchText = $("#product").val().toLowerCase();
-    var selectedCategory = $(".category_button.active").data("category");
-    var productFound = false;
+    $(document).ready(function () {
+      var filterProducts = function () {
+        var searchText = $("#product").val().toLowerCase();
+        var selectedCategory = $(".category_button.active").data("category");
+        var productFound = false;
 
-    $(".product").each(function () {
-      var productName = $(this).find(".text-lg").text().toLowerCase();
-      var categories = $(this).data("category-ids").toString().split(",");
-      var isCategoryMatch =
-        selectedCategory === "all" ||
-        categories.includes(selectedCategory.toString());
-      var isSearchMatch = productName.includes(searchText);
+        $(".product").each(function () {
+          var productName = $(this).find(".text-lg").text().toLowerCase();
+          var categories = $(this).data("category-ids").toString().split(",");
+          var isCategoryMatch =
+            selectedCategory === "all" ||
+            categories.includes(selectedCategory.toString());
+          var isSearchMatch = productName.includes(searchText);
 
-      if (isCategoryMatch && isSearchMatch) {
-        $(this).show();
-        productFound = true;
-      } else {
-        $(this).hide();
-      }
+          if (isCategoryMatch && isSearchMatch) {
+            $(this).show();
+            productFound = true;
+          } else {
+            $(this).hide();
+          }
+        });
+
+        $("#no-products-message").toggle(!productFound);
+      };
+
+      $(".category_button").on("click", function () {
+        $(".category_button").removeClass("active");
+        $(this).addClass("active");
+        filterProducts();
+      });
+
+      $("#product").on("input", filterProducts);
+
+      filterProducts();
     });
 
-    $("#no-products-message").toggle(!productFound);
-  };
 
-  $(".category_button").on("click", function () {
-    $(".category_button").removeClass("active");
-    $(this).addClass("active");
-    filterProducts();
-  });
 
-  $("#product").on("input", filterProducts);
+    document.addEventListener('DOMContentLoaded', function () {
+      const dynamicContents = ["Replacement", "Accounts", "drops", "Discounts", "Logs"];
+      let index = 0;
 
-  filterProducts();
-});
+      setInterval(() => {
+        document.getElementById('dynamic-content').style.animation = 'none';
+        setTimeout(() => {
+          document.getElementById('dynamic-content').innerHTML = dynamicContents[index];
+          document.getElementById('dynamic-content').style.animation = 'slideUp 1s ease-in-out';
+          index = (index + 1) % dynamicContents.length;
+        }, 50);
+      }, 3000);
+    });
 
-</script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const dynamicContents = ["Support", "Stocks", "Hits"];
+      let index = 0;
+
+      setInterval(() => {
+        document.getElementById('dynamic-content2').style.animation = 'none';
+        setTimeout(() => {
+          document.getElementById('dynamic-content2').innerHTML = dynamicContents[index];
+          document.getElementById('dynamic-content2').style.animation = 'slideUp 1s ease-in-out';
+          index = (index + 1) % dynamicContents.length;
+        }, 50);
+      }, 3000);
+    });
+
+
+
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const partsText = ["EXP", "LOR", "E THE HIGH ", "QUAL", "ITY ", "PRODUCTS"];
+      const partsElements = partsText.map((_, i) => document.getElementById(`part${i + 1}`));
+      let currentPart = 0;
+      let partIndex = 0;
+
+      function type() {
+        if (currentPart < partsElements.length) {
+          if (partIndex < partsText[currentPart].length) {
+            partsElements[currentPart].textContent += partsText[currentPart][partIndex];
+            partIndex++;
+            setTimeout(type, 100); // Speed of typing
+          } else {
+            partIndex = 0;
+            currentPart++;
+            setTimeout(type, 250); // Delay before next part starts
+          }
+        } else {
+          document.getElementById('cursor').style.animation = 'none';
+          document.getElementById('cursor').style.opacity = 0; // Optionally remove cursor after completion
+        }
+      }
+
+      type();
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const scrollContent = document.querySelector('.scrolling-content');
+      let totalWidth = 0;
+
+      document.querySelectorAll('.product-name').forEach(item => {
+        totalWidth += item.offsetWidth + parseFloat(window.getComputedStyle(item).marginLeft) + parseFloat(window.getComputedStyle(item).marginRight);
+      });
+
+      const speed = totalWidth / window.innerWidth;
+      scrollContent.style.animationDuration = `${speed * 3}s`;
+
+      const container = document.querySelector('.scrolling-container');
+      container.addEventListener('mouseenter', () => {
+        scrollContent.style.animationPlayState = 'paused';
+      });
+      container.addEventListener('mouseleave', () => {
+        scrollContent.style.animationPlayState = 'running';
+      });
+    });
+
+
+  </script>
+
+
+
 </body>
+
 </html>

@@ -9,7 +9,7 @@
 <div class="gradient-border my-4 mx-auto max-w-screen-xl rounded-lg overflow-hidden">
     <nav class="navbar-inner flex justify-between items-center p-4">
       <a href="#" class="flex items-center">
-        <span class="text-2xl font-bold">LOGO</span>
+        <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_dark_1x_r5.png" alt="LOGO">
       </a>
 
       <div class="hidden md:flex space-x-10">
