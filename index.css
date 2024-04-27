@@ -399,13 +399,10 @@
 	animation-play-state: paused;
 }
 
-/* Responsive settings for small devices */
 @media (max-width: 768px) {
 	.product-name {
 		padding: 8px 16px;
-		/* Smaller padding for compact display */
 		margin: 0 10px;
-		/* Smaller margin */
 	}
 }
 
@@ -413,24 +410,16 @@
 
 .content-description {
 	text-align: center;
-	/* Center the text */
 	padding: 20px;
-	/* Add some padding around the text */
 	line-height: 1.2;
-	/* Tighten line height to reduce gap */
 }
 
 .main-title {
 	font-size: 40px;
-	/* Larger font size */
 	font-weight: bold;
-	/* Bold text */
 	color: #0ad9ea;
-	/* Specific color */
 	display: block;
-	/* Makes the span take the full line */
 	margin: 1;
-	/* Remove default margins */
 }
 
 

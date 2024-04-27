@@ -282,15 +282,15 @@
           if (partIndex < partsText[currentPart].length) {
             partsElements[currentPart].textContent += partsText[currentPart][partIndex];
             partIndex++;
-            setTimeout(type, 100); // Speed of typing
+            setTimeout(type, 100);
           } else {
             partIndex = 0;
             currentPart++;
-            setTimeout(type, 250); // Delay before next part starts
+            setTimeout(type, 250);
           }
         } else {
           document.getElementById('cursor').style.animation = 'none';
-          document.getElementById('cursor').style.opacity = 0; // Optionally remove cursor after completion
+          document.getElementById('cursor').style.opacity = 0;
         }
       }
 
