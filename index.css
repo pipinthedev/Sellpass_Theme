@@ -153,31 +153,19 @@
 
 .btn-product {
 	background-color: #6D28D9;
-
 	color: white;
 	font-weight: bold;
 	padding: 10px 0;
-
 	display: block;
-
 	text-align: center;
-
 	text-decoration: none;
-
 	border: 1px solid transparent;
-
 	outline: none;
-
 	cursor: pointer;
-
 	border-radius: 5px;
-
 	transition: background-color 300ms, transform 300ms, border-color 300ms;
-
 	width: 100%;
-
 	margin: auto;
-
 }
 
 .btn-product:hover {
@@ -430,14 +418,12 @@
 
 .dynamic-part {
 	color: #01ECEA;
-	/* Set the dynamic part color to red */
 	position: relative;
 	animation: slideUp 1s ease-in-out;
 }
 
 .dynamic-part2 {
 	color: #01ECEA;
-	/* Set the dynamic part color to red */
 	position: relative;
 	animation: slideUp 1s ease-in-out;
 }
@@ -458,24 +444,15 @@
 
 
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
 	.main-title {
 		font-size: 20px;
-		/* Smaller font size for mobile */
 	}
 
 	.sub-title {
 		font-size: 16px;
-		/* Adjust sub-title size for mobile */
 	}
 }
-
-
-
-
-
-
 
 
 

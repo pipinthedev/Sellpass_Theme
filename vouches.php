@@ -105,7 +105,7 @@
         function scrollReviews() {
             const container = document.getElementById('scrollContainer');
             let currentPosition = 0;
-            const speed = 1; // Adjust scroll speed here
+            const speed = 1; 
             let animationFrameId;
 
             function animate() {

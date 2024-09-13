@@ -33,10 +33,6 @@
 
 
 
-<!--   
-<span class="sticky_buttons">
- <a href="https://discord.gg/aBFQYzKDMV" target="_blank" class="discord_button"></a>
-</span> -->
 
 <script>
 const navButton = document.getElementById('nav_button');
