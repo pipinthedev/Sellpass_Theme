@@ -3,9 +3,8 @@ require_once 'simple_html_dom.php';
 $cache_file = __DIR__ . '/vouches.txt';
 $cache_time = 3600;
 
-// Check if the cache file needs to be updated
 if ((file_exists($cache_file) && (time() - filemtime($cache_file) > $cache_time)) || (isset($_GET['action']) && $_GET['action'] == "update_vouches")) {
-  $ch = curl_init('https://psyo.sellpass.io/reviews');
+  $ch = curl_init('https://hqlogs.sellpass.io/reviews');
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $file = curl_exec($ch);
   curl_close($ch);

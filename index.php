@@ -9,7 +9,7 @@
 
 
   <?php
-  $shop_name = "psyo";
+  $shop_name = "hqlogs";
   function getRandomNumber($min, $max)
   {
     return rand($min, $max);
@@ -50,94 +50,98 @@
     <div class="scrolling-container">
       <div class="scrolling-content">
         <?php foreach ($products as $product) {
-          $display_name = strlen($product['product']['title']) > 50 ? substr($product['product']['title'], 0, 47) . '...' : $product['product']['title'];
+          $display_name = isset($product['product']['title']) ? (strlen($product['product']['title']) > 50 ? substr($product['product']['title'], 0, 47) . '...' : $product['product']['title']) : 'Unknown Product';
           echo "<div class='product-name'>{$display_name}</div>";
         } ?>
       </div>
     </div>
-    <div class="masking-div-right"></div> <!-- Right masking div for styling -->
+    <div class="masking-div-right"></div>
   </div>
 
 
   <?php include ('vouches.php'); ?>
 
   <section class="px-4 py-12 mt-3 relative" id="prodcs">
-    <div class="container mx-auto">
-
-      <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
-        <div class="content-description">
-          <span class="main-title" style="color: #0ad9ea;">What do we provide?</span>
-          <div class="sub-title">
-            <span>The High Quality </span><span id="dynamic-content" class="dynamic-part"
-              style="color:  #de0ab1;">Support</span>
-          </div>
+  <div class="container mx-auto">
+    <div class="search_form ml_auto mr_auto align_center mb_8 flex_persistent" data-width="100%">
+      <div class="content-description">
+        <span class="main-title" style="color: #0ad9ea;">What do we provide?</span>
+        <div class="sub-title">
+          <span>The High Quality </span><span id="dynamic-content" class="dynamic-part"
+            style="color:  #de0ab1;">Support</span>
         </div>
+      </div>
 
+      <div style="border: 1px solid #0ad9ea"
+        class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
+        <input type="text" id="product" name="product" value="" placeholder="Search for products" data-width="70%"
+          class="p_0 pl_8 bg_none">
+      </div>
+      <div class="category_buttons">
+        <button class="category_button active" data-category="all">All</button>
+        <?php foreach ($categories as $category): ?>
+          <?php if (strtolower($category['name']) !== 'all'): ?>
+            <button class="category_button" data-category="<?= $category['id']; ?>">
+              <?= htmlspecialchars(ucwords(strtolower($category['name']))); ?>
+            </button>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
 
-        <div style="border: 1px solid #0ad9ea"
-          class="bg_secondary button_outlined flex_container border_neutral position_relative mb_8 p_3  color_neutral radius_medium button_outlined border_neutral">
+      <div id="no-products-message" class="text-center text-lg font-bold" style="display: none; margin-top: 30px !important;">
+        No Products Found
+      </div>
 
-
-          <input type="text" id="product" name="product" value="" placeholder="Search for products" data-width="70%"
-            class="p_0 pl_8 bg_none">
-        </div>
-        <div class="category_buttons">
-          <button class="category_button active" data-category="all">All</button>
-          <?php foreach ($categories as $category): ?>
-            <?php if (strtolower($category['name']) !== 'all'): ?>
-              <button class="category_button" data-category="<?= $category['id']; ?>">
-                <?= htmlspecialchars(ucwords(strtolower($category['name']))); ?>
-              </button>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </div>
-
-
-        <div id="no-products-message" class="text-center text-lg font-bold"
-          style="display: none; margin-top: 30px !important;">
-          No Products Found
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-          data-aos="fade-up" id="products">
-          <?php foreach ($products as $product): ?>
-            <?php
-            $category_ids = [];
-            foreach ($categories as $category) {
-              if (in_array($product['id'], $category['listingIds'])) {
-                $category_ids[] = $category['id'];
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" data-aos="fade-up" id="products">
+        <?php foreach ($products as $product): ?>
+          <?php
+          if (isset($product['product'])) {
+              $productData = $product['product'];
+              
+              if (!isset($productData['title'], $productData['thumbnailCfImageId'], $product['minPriceDetails']['amount'])) {
+                  continue;
               }
-            }
-            ?>
-            <div
-              class="product flex flex-col justify-between bg-gray-800 rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full"
-              data-category-ids="<?= implode(',', $category_ids); ?>">
-              <div class="p-4 flex justify-center">
-                <img class="object-cover w-full h-36" style="border-radius: 10px !important;"
-                  src="https://imagedelivery.net/<?= htmlspecialchars($product['product']['thumbnailCfImageId']); ?>/productCard"
-                  alt="<?= htmlspecialchars($product['product']['title']); ?>">
-              </div>
-              <div class="p-4 text-center">
-                <p class="text-lg font-semibold text-white"><?= htmlspecialchars($product['product']['title']); ?></p>
-                <p class="text-sm text-gray-400"><?= htmlspecialchars($product['product']['shortDescription'] ?? ''); ?>
-                </p>
-              </div>
-              <div class="px-4 pb-4 mt-auto">
-                <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
-                  data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
-                  class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg"
-                  style="background-color:  #130ade ;">Buy Now |
-                  <?= $product['minPriceDetails']['currency'] . ' ' . number_format($product['minPriceDetails']['amount'], 2); ?></button>
-              </div>
-            </div>
-          <?php endforeach; ?>
+              
+              $title = htmlspecialchars($productData['title']);
+              $thumbnail = "https://imagedelivery.net/" . htmlspecialchars($productData['thumbnailCfImageId']) . "/productCard";
+              $shortDescription = isset($productData['shortDescription']) ? htmlspecialchars($productData['shortDescription']) : '';
+              $price = number_format($product['minPriceDetails']['amount'], 2);
+              $currency = isset($product['minPriceDetails']['currency']) ? $product['minPriceDetails']['currency'] : 'USD';
 
-
-
-        </div>
+              $category_ids = [];
+              foreach ($categories as $category) {
+                  if (in_array($product['id'], $category['listingIds'])) {
+                      $category_ids[] = $category['id'];
+                  }
+              }
+              ?>
+              <div class="product flex flex-col justify-between bg-gray-800 rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full"
+                data-category-ids="<?= implode(',', $category_ids); ?>">
+                <div class="p-4 flex justify-center">
+                  <img class="object-cover w-full h-36" style="border-radius: 10px !important;"
+                    src="<?= $thumbnail; ?>" alt="<?= $title; ?>" onerror="this.onerror=null; this.src='path/to/placeholder.jpg';">
+                </div>
+                <div class="p-4 text-center">
+                  <p class="text-lg font-semibold text-white"><?= $title; ?></p>
+                  <p class="text-sm text-gray-400"><?= $shortDescription; ?></p>
+                </div>
+                <div class="px-4 pb-4 mt-auto">
+                  <button data-width="100%" data-sellpass-product-path="<?= $product['path']; ?>"
+                    data-sellpass-domain="<?php echo $shop_name; ?>.sellpass.io" href="#"
+                    class="block w-full hover:bg-purple-500 text-center text-white font-bold py-2 rounded-lg"
+                    style="background-color:  #130ade ;">Buy Now |
+                    <?= $currency . ' ' . $price; ?></button>
+                </div>
+              </div>
+              <?php
+          }
+          ?>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
+
+
   <footer class="text-center py-5 text-xs">
     <p>&copy; Testing shop</p>
   </footer>
